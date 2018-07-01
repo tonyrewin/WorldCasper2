@@ -22,6 +22,8 @@
 
     <div class="site-wrapper">
 
+        <div id="search-results" class="search-results"></div>
+
         {{!-- All the main content gets inserted here, index.hbs, post.hbs, etc --}}
         {{{body}}}
 
@@ -33,7 +35,6 @@
                     <a href="{{@blog.url}}">{{t "Latest Posts"}}</a>
                     {{#if @blog.facebook}}<a href="{{facebook_url @blog.facebook}}" target="_blank" rel="noopener">Facebook</a>{{/if}}
                     {{#if @blog.twitter}}<a href="{{twitter_url @blog.twitter}}" target="_blank" rel="noopener">Twitter</a>{{/if}}
-                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
                 </nav>
             </div>
         </footer>
@@ -54,6 +55,9 @@
         </div>
     </div>
     {{/if}}
+
+    {{!-- search with ghostHunter --}}
+    <script type="text/javascript" src="{{asset "js/jquery.ghosthunter.min.js"}}"></script>
 
     {{!-- jQuery + Fitvids, which makes all video embeds responsive --}}
     <script

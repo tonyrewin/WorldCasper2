@@ -1,7 +1,9 @@
 var gulp = require('gulp');
 
 // gulp plugins and utils
-var gutil = require('gulp-util');
+// var gutil = require('gulp-util'); // deprecated
+var beeper = require('beeper');
+var fanlog = require('fancy-log');
 var livereload = require('gulp-livereload');
 var postcss = require('gulp-postcss');
 var sourcemaps = require('gulp-sourcemaps');
@@ -15,18 +17,14 @@ var customProperties = require('postcss-custom-properties');
 var easyimport = require('postcss-easy-import');
 
 var swallowError = function swallowError(error) {
-    gutil.log(error.toString());
-    gutil.beep();
+    fanlog(error.toString());
+    beeper();
     this.emit('end');
 };
 
 var nodemonServerInit = function () {
     livereload.listen(1234);
 };
-
-gulp.task('build', ['css'], function (/* cb */) {
-    return nodemonServerInit();
-});
 
 gulp.task('css', function () {
     var processors = [
@@ -50,8 +48,8 @@ gulp.task('watch', function () {
     gulp.watch('assets/css/**', ['css']);
 });
 
-gulp.task('zip', ['css'], function () {
-    var targetDir = 'dist/';
+gulp.task('zip', gulp.series(['css'], function () {
+    var targetDir = './dist/';
     var themeName = require('./package.json').name;
     var filename = themeName + '.zip';
 
@@ -62,8 +60,13 @@ gulp.task('zip', ['css'], function () {
     ])
         .pipe(zip(filename))
         .pipe(gulp.dest(targetDir));
-});
+}));
 
-gulp.task('default', ['build'], function () {
-    gulp.start('watch');
-});
+
+gulp.task('build', gulp.series(['css'], function (/* cb */) {
+    return nodemonServerInit();
+}));
+
+gulp.task('default', gulp.parallel(['build', 'watch']));
+
+

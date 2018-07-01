@@ -19,6 +19,7 @@ Currently available languages:
 - Lithuanian (`lt`)
 - Polish (`pl`)
 - Romanian (`ro`)
+- Russian (`ru`)
 - Spanish (`es`)
 - Swedish (`sv`)
 
